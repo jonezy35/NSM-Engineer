@@ -406,3 +406,53 @@ systemctl start suricata
 systemctl status suricata
 
 ```
+
+## Installing & Configuring fsf
+```bash
+yum install fsf
+
+vi /opt/fsf/fsf-server/conf/config.py
+  SCANNER_CONFIG 'LOG_PATH' : '/data/fsf'
+                 'YARA_PATH' : '/var/lib/yara-rules/rules.yara'
+                 'PID_PATH' : '/run/fsf/fsf.pid'
+                 'EXPORT_PATH' : '/data/fsf/archive'
+                 delete 'scan log'
+  SERVER_CONFIG 'IP_ADDRESS' : "localhost"
+  ESC
+  :wq!
+
+vi /usr/lib/systemd/system/fsf.service
+  verify PIDFile is in /run/fsf/fsf.pid
+  ESC
+  :wq!
+
+cd /data
+
+mkdir -p /data/fsf/archive
+
+chown -R fsf:fsf fsf/
+
+vi /opt/fsf/fsf-client/conf/config.py
+  SEVER_CONFIG 'IP_ADDRESS' : {'localhost'}
+  ESC
+  :wq!
+
+firewall-cmd --add-port=5800/tcp --permanent
+firewall-cmd --reload
+systemctl start fsf
+
+cd ~
+
+vi random.txt
+  asldkfja'sdlfj'alsdfj'aljskdf'lajksfdl
+  asdkfjalsdkfj;lakjsdf;lkajsdlfjalsdfkj
+  ESC
+  :wq!
+
+/opt/fsf/fsf_client/fsf_client.py --full random.txt
+
+cd /data/fsf
+  rockout.log should be populated from the above command
+
+
+```
