@@ -323,19 +323,58 @@ which stenotype
 
 vi /etc/stenographer/config
 
-"PacketsDirectory": "/data/stenographer/packets"
-"IndexDirectory": "/data/stenographer/index"
-"Interface": "eno1"
+  "PacketsDirectory": "/data/stenographer/packets"
+  "IndexDirectory": "/data/stenographer/index"
+  "Interface": "eno1"
 
-:wq!
+  :wq!
 
+stenokeys.sh stenographer stenographer
 
-mkdir /data/stenographer/index
-mkdir /data/stenographer/packets
-
-mkdir /data/zeek
-mkdir /data/fsf
-mkdir /data/suricata
+which stenographer
+  should say /bin/stenographer
 
 
+mkdir -p /data/stenographer/{packets,index}
+
+cd /data/stenographer
+ls (should see index and packets)
+
+cd ..
+
+chown -R stenographer:stenographer stenographer/
+
+systemctl start stenographer
+systemctl status stenographer
+
+cd stenographer/packets
+ls (should see random string of numbers)
+
+
+```
+
+## Installing & Configuring Suricata
+
+```bash
+yum install suricata
+
+vi /etc/suricata/suricata.yaml
+  :set nu
+  :56
+  default-log-dir: /data/suricata
+  ESC
+
+  :580
+  - interface: eno1
+  ESC
+  :wq!
+
+vi /etc/sysconfig/suricata
+  OPTIONS="--af-packet=eno1 --user suricata"
+  ESC
+  :wq!
+
+cat /proc/cpuinfo | egrep -e 'processor|physical id|core id' | xargs -l3
+
+lscpu -e 
 ```
