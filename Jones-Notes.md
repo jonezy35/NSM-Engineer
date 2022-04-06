@@ -1,9 +1,3 @@
-# Please Send these to me
-  - jonezy7173@gmail.com
-  - jjones@ncdoc.navy.mil
-  - 419-560-3836
-
-
 # NSM Engineer Course
 
 ### Order for Test
@@ -364,11 +358,33 @@ vi /etc/suricata/suricata.yaml
   default-log-dir: /data/suricata
   ESC
 
+  :60
+  enabled: no
+  ESC
+
+  :76
+  enabled: no
+  ESC
+
+  :404
+  enabled: no
+  ESC
+
+  :557
+  enabled: no
+  ESC
+
   :580
   - interface: eno1
   ESC
-  :wq!
 
+  :582
+  threads: 4
+
+  :wq!
+```
+
+```bash
 vi /etc/sysconfig/suricata
   OPTIONS="--af-packet=eno1 --user suricata"
   ESC
@@ -376,5 +392,17 @@ vi /etc/sysconfig/suricata
 
 cat /proc/cpuinfo | egrep -e 'processor|physical id|core id' | xargs -l3
 
-lscpu -e 
+lscpu -e
+
+suricata-update add-source emerging-threats http://192.168.2.20/share/emerging.rules.tar
+
+suricata-update
+
+cd /data
+
+chown -R suricata:suricata suricata/
+
+systemctl start suricata
+systemctl status suricata
+
 ```
