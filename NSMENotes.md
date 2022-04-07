@@ -456,3 +456,132 @@ cd /data/fsf
 
 
 ```
+
+# Day 4
+
+## Kafka
+ ### How Kafka works
+ - Producer - endpoints
+    - Data Origin
+    - Zeek, Suricata, FSF
+ - Broker - kafka
+    - Topics
+      - We have a topic for each Data Origin (zeek, Suricata, fsf)
+      - Replication factor is created per topic
+ - Consumer - SIEM
+    - Subscribe to Topics
+    - Consumer offset is used to keep data in order. The Consumer uses it to track where it is in the data sent from broker and is aused to request data from the Broker
+      - A.K.A. Data Reliability
+
+- Kafka workers
+  - Multiple workers
+  - Each topic will have a worker assigned as a leader
+    - This worker can talk internally to the other workers as well as talk with zookeeper
+    - Zookeeper:
+      - Tracks the metadata about the cluster itself (The Binding that ties all of the wokers together)
+      - Zookeeper is being replaced with KRAFT within the next few years
+
+
+
+### Installing & Configuring kafka
+
+```bash
+sudo yum install kafka librdkafka zookeeper -y
+```
+#### Zookeeper must be started before Kafka!!!
+```bash
+sudo -s
+vi /etc/zookeeper/zoo.cfg
+  initLimit=5
+  syncLimit=2
+  clientPort=2181
+  maxClientCnxns=0
+  server.1=localhost:2182:2183 # Add directly below maxClientCnxns
+  ESC
+  :wq!
+
+cd /var/lib/zookeeper
+touch myid
+chown zookeeper:zookeeper myid
+vi myid
+  1
+  ESC
+  :wq!
+
+vi /etc/kafka/server.properties
+  :set nu
+  broker.id=1
+  :31
+  listeners=PLAINTEXT:://localhost:9092
+  :36
+  advertized.listeners=PLAINTEXT://localhost:9092
+  :60
+  log.dirs=/data/kafka/logs
+  :103
+  log.retention.hours=12
+  :123
+  enable.zookeeper=true #add on line 123 above zookeeper.connect
+  zookeeper.connect=localhost:2181
+
+  delete.topic.enable=true #Add to the bottom of the zeek section right above group coordinator settings
+
+  ESC
+  :wq!
+```
+```bash
+sudo -s
+vi /usr/share/kafka/config/producer.properties
+  :set nu
+  :21
+  bootstrap.servers:localhost:9092
+  #zookeeper
+  zookeeper.connect=localhost:2181 #Add directly under line 21
+  ESC
+  :wq!
+
+vi /usr/share/kafka/config/consumer.properties
+  :set nu
+  :19
+  bootstrap.servers=localhost:9092
+  #Zookeeper
+  zookeeper.connect=localhost:2181
+  zookeeper.connect.timeout.ms=6000 #Add these lines right after line 19
+  ESC
+  :wq!
+
+mkdir -p /data/kafka/logs
+chown -r kafka:kafka: /data/kafka
+
+firewall-cmd --permanent --add-port={9092,2181,2182,2183}/tcp
+firewall-cmd --reload #Use this instead of systemctl because restarting the firewall will bring down all of the firewall ports while it restarts
+
+firewall-cmd --list-all #To check that your rules applied
+
+systemctl start zookeeper
+watch systemctl status zookeeper
+systemctl status zookeeper -l
+
+systemctl start kafka
+systemctl status kafka -l
+
+cd /usr/share/kafka/bin #.sh script used to troubleshoot/configure kafka after deployment
+
+./kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 1 --partitions 8 --topic zeek-raw
+
+./kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 1 --partitions 8 --topic suricata-raw
+
+./kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 1 --partitions 8 --topic fsf-raw
+
+# Check that the topics were created successfully
+
+./kafka-topics.sh --describe --zookeeper localhost:2181 --topic zeek-raw
+
+./kafka-topics.sh --describe --zookeeper localhost:2181 --topic suricata-raw
+
+./kafka-topics.sh --describe --zookeeper localhost:2181 --topic fsf-raw
+
+#Script to run that shows you the data that is in your topics
+./kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic zeek-raw --from-beginning
+
+```
+## Installing & Configuring zeek
