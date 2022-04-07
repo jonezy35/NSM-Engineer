@@ -585,3 +585,95 @@ cd /usr/share/kafka/bin #.sh script used to troubleshoot/configure kafka after d
 
 ```
 ## Installing & Configuring zeek
+
+### Zeek can NOT hyperthread. It can only be pinned on physical cores.
+  - #### 160-200 Mbps per physical CPU core.
+
+```bash
+sudo -s
+
+yum install zeek zeek-plugin-kafka zeek-plugin-af_packet -y
+
+lscpu -e
+
+cd /etc/zeek
+
+vi networks.cfg
+  # Can insert tags in here that will tag certain IP's as certain thing (e.x. servers, googleDNS 8.8.8.8, Cloudflare DNS 1.1.1.1, etc.)
+  #Needs CIDR (so for 8.8.8.8 it would be: 8.8.8.8/32)
+  # Takes IPv4 & IPv6.
+
+vi zeekctl.cfg
+  #Configure the Log Rotation Intervals & Log Archive Period
+  :set nu
+  :67
+  LogDir = /data/zeek/logs
+
+vi node.cfg
+  :set nu
+  comment out lines 8-11
+  Delete everything worker2 down
+  Uncomment the cluster (should have a logger, manager, proxy, and worker)
+
+  #Add this line under the manager section before the proxy section
+  pin_cpus=0
+
+  #Worker-1
+  interface=af_packet::eno1
+  lb_method=custom
+  lb_procs=2
+  pin_cpus=1,2
+  env_vars=fanout_id=93
+  ESC
+  :wq!
+```
+
+```bash
+sudo -s
+cd /usr/share/zeek
+cd /site
+mkdir scripts
+cd scripts/
+
+#Download zeek scripts
+curl -L -O http://192.168.2.20/share/zeek_scripts.tar.gz
+
+#unzip downloaded file
+tar -zxvf zeek_scripts.tar.gz
+
+#Remove zipped file (no longer needed)
+rm -rf zeek_scripts.tar.gz
+
+cd zeek_scripts
+
+vi kafka.zeek
+  ["metadata.broker.list"] = ("localhost:9092");
+
+  ESC
+  :wq!
+
+cd /usr/share/zeek/site
+
+vi local.zeek
+  #zeek scripts to enable/disable
+
+  #Add to the end of the file
+  @load scripts/zeek_scripts/json
+  @load scripts/zeek_scripts/afpacket
+  @load scripts/zeek_scripts/kafka
+  @load scripts/zeek_scripts/extension
+  @load scripts/zeek_scripts/extract-files
+  @load scripts/zeek_scripts/fsf
+
+  :wq!
+
+#Zeek binary lives in /usr/bin
+cd /usr/bin
+
+cd /data/zeek
+mkdir logs
+
+zeekctl deploy
+
+```
+
