@@ -259,8 +259,6 @@ sudo systemctl status network
 
 ## Day 3
 
-### Changed wallpaper to Kung Fu Panda
-
 ### Download repo stuff
   #### SSH into sensors
 
@@ -390,8 +388,6 @@ vi /etc/sysconfig/suricata
   ESC
   :wq!
 
-cat /proc/cpuinfo | egrep -e 'processor|physical id|core id' | xargs -l3
-
 lscpu -e
 
 suricata-update add-source emerging-threats http://192.168.2.20/share/emerging.rules.tar
@@ -503,10 +499,8 @@ vi /etc/zookeeper/zoo.cfg
 cd /var/lib/zookeeper
 touch myid
 chown zookeeper:zookeeper myid
-vi myid
-  1
-  ESC
-  :wq!
+echo "1" > myid
+cat myid #Verify that 1 was written to myid
 
 vi /etc/kafka/server.properties
   :set nu
@@ -533,7 +527,7 @@ sudo -s
 vi /usr/share/kafka/config/producer.properties
   :set nu
   :21
-  bootstrap.servers:localhost:9092
+  bootstrap.servers=localhost:9092
   #zookeeper
   zookeeper.connect=localhost:2181 #Add directly under line 21
   ESC
