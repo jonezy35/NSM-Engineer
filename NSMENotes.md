@@ -676,4 +676,8 @@ mkdir logs
 zeekctl deploy
 
 ```
+```bash
+cd /usr/share/kafka/bin
 
+./kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic zeek-raw --from-beginning
+```
