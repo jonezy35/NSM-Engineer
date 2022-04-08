@@ -122,6 +122,7 @@ rebind-domain-ok=/lab-repo/
     - Reclaim Space
     - Delete all
     - Reclaim Space
+    - Click "Installation Destination"
     - Click "I will configure partitioning"
     - Click "Done"
     - Click here to create them automatically
@@ -143,7 +144,7 @@ rebind-domain-ok=/lab-repo/
       - /var/log/audit
       - /var/tmp
       - /data/stenographer
-      - /data/Suricata
+      - /data/suricata
       - /data/kafka
       - /data/elasticsearch
       - /data/zeek
@@ -172,13 +173,13 @@ rebind-domain-ok=/lab-repo/
         - /var/tmp - 10 GiB
         - /home - 50 GiB
         - swap - 10 GiB
-        - / - leave blank (do this at the end)
         - /data/stenographer - 500 GiB  
         - /data/Suricata - 25 GiB
-        - /data/kafka - 100 GiB
-        - /data/elasticsearch - leave blank (do this at the end)
+        - /data/kafka - 100 Gib
         - /data/zeek - 25 GiB
         - /data/fsf -  10 GiB
+        - /data/elasticsearch - leave blank (do this at the end)
+        - / - leave blank (do this at the end)
         ###### Leaving the storage size blank automatically allocates the remaining storage to that mount point(s)
 
         - Click "Done" & 'Accept'
@@ -201,7 +202,8 @@ rebind-domain-ok=/lab-repo/
 
 ```vim
 sudo vi /etc/sysctl.conf
-i - to insert
+Go to the last Line
+o - to open a line below
 
 net.ipv6.conf.all.disable_ipv6 = 1
 net.ipv6.conf.default.disable_ipv6 = 1
@@ -217,13 +219,6 @@ delete the ipv6 line (::1)
 navigate to the line and type dd
 :wq!
 ```
-
-```vim
-sudo systemctl restart network
-sudo systemctl status network
-```
-
-#### If you don't get a dhcp address
 
 ```vim
 sudo vi /etc/sysconfig/network-scripts/ifcfg-enp5s0
@@ -265,6 +260,11 @@ sudo systemctl status network
   ```bash
 
   sudo -s
+  
+  cd .ssh
+  rm known_hosts
+  
+  ssh username@sensorIP
 
   cd /etc/yum.repos.d/
   ls
@@ -283,6 +283,8 @@ sudo systemctl status network
   curl -L -O http://192.168.2.20/share/interface.sh
 
   mv interface.sh /tmp/
+  
+  cd /tmp/
 
   chmod 777 interface.sh
 
@@ -308,8 +310,7 @@ systemctl status network
 ## Installing & Configuring stenographer
 ```bash
 sudo -s
-yum install stenographer
-  y
+yum install stenographer -y
 
 which stenotype
 
@@ -329,18 +330,20 @@ which stenographer
 
 mkdir -p /data/stenographer/{packets,index}
 
-cd /data/stenographer
-ls (should see index and packets)
+cd /data
+ls stenographer (should see index and packets)
 
 cd ..
 
 chown -R stenographer:stenographer stenographer/
 
+ll #to check that ownership was changed
+
 systemctl start stenographer
 systemctl status stenographer
 
 cd stenographer/packets
-ls (should see random string of numbers)
+ls (should see random string of numbers...this takes a bit)
 
 
 ```
@@ -348,7 +351,7 @@ ls (should see random string of numbers)
 ## Installing & Configuring Suricata
 
 ```bash
-yum install suricata
+yum install suricata -y
 
 vi /etc/suricata/suricata.yaml
   :set nu
@@ -377,7 +380,7 @@ vi /etc/suricata/suricata.yaml
   ESC
 
   :582
-  threads: 4
+  threads: 4 #Don't forget to uncomment this line
 
   :wq!
 ```
@@ -392,7 +395,7 @@ lscpu -e
 
 suricata-update add-source emerging-threats http://192.168.2.20/share/emerging.rules.tar
 
-suricata-update
+suricata-update #Will take a second
 
 cd /data
 
@@ -405,19 +408,19 @@ systemctl status suricata
 
 ## Installing & Configuring fsf
 ```bash
-yum install fsf
+yum install fsf -y
 
 vi /opt/fsf/fsf-server/conf/config.py
   SCANNER_CONFIG 'LOG_PATH' : '/data/fsf'
                  'YARA_PATH' : '/var/lib/yara-rules/rules.yara'
                  'PID_PATH' : '/run/fsf/fsf.pid'
                  'EXPORT_PATH' : '/data/fsf/archive'
-                 delete 'scan log'
-  SERVER_CONFIG 'IP_ADDRESS' : "localhost"
+                 delete 'scan log' from 'ACTIVE_LOGGING_MODULES'
+  SERVER_CONFIG 'IP_ADDRESS' : "localhost" #Make sure to put this in quotes and leave the comma afterwards
   ESC
   :wq!
 
-vi /usr/lib/systemd/system/fsf.service
+vi /usr/lib/systemd/system/fsf.service #Instead of VI you could also just cat this file- it's short
   verify PIDFile is in /run/fsf/fsf.pid
   ESC
   :wq!
@@ -429,7 +432,7 @@ mkdir -p /data/fsf/archive
 chown -R fsf:fsf fsf/
 
 vi /opt/fsf/fsf-client/conf/config.py
-  SEVER_CONFIG 'IP_ADDRESS' : {'localhost'}
+  SEVER_CONFIG 'IP_ADDRESS' : ['localhost']
   ESC
   :wq!
 
@@ -445,7 +448,7 @@ vi random.txt
   ESC
   :wq!
 
-/opt/fsf/fsf_client/fsf_client.py --full random.txt
+/opt/fsf/fsf-client/fsf_client.py --full random.txt #Should return something
 
 cd /data/fsf
   rockout.log should be populated from the above command
@@ -491,8 +494,10 @@ vi /etc/zookeeper/zoo.cfg
   initLimit=5
   syncLimit=2
   clientPort=2181
-  maxClientCnxns=0
-  server.1=localhost:2182:2183 # Add directly below maxClientCnxns
+  maxClientCnxns=0 #uncomment
+  
+  #Add directly below maxClientCnxns
+  server.1=localhost:2182:2183 
   ESC
   :wq!
 
@@ -504,11 +509,13 @@ cat myid #Verify that 1 was written to myid
 
 vi /etc/kafka/server.properties
   :set nu
+  
+  :21
   broker.id=1
   :31
-  listeners=PLAINTEXT:://localhost:9092
+  listeners=PLAINTEXT:://localhost:9092 #Uncomment this line
   :36
-  advertized.listeners=PLAINTEXT://localhost:9092
+  advertized.listeners=PLAINTEXT://localhost:9092 #Uncomment
   :60
   log.dirs=/data/kafka/logs
   :103
@@ -517,7 +524,7 @@ vi /etc/kafka/server.properties
   enable.zookeeper=true #add on line 123 above zookeeper.connect
   zookeeper.connect=localhost:2181
 
-  delete.topic.enable=true #Add to the bottom of the zeek section right above group coordinator settings
+  delete.topic.enable=true #Add to the bottom of the zookeeper section right above group coordinator settings
 
   ESC
   :wq!
@@ -544,7 +551,7 @@ vi /usr/share/kafka/config/consumer.properties
   :wq!
 
 mkdir -p /data/kafka/logs
-chown -r kafka:kafka: /data/kafka
+chown -R kafka:kafka /data/kafka
 
 firewall-cmd --permanent --add-port={9092,2181,2182,2183}/tcp
 firewall-cmd --reload #Use this instead of systemctl because restarting the firewall will bring down all of the firewall ports while it restarts
@@ -552,7 +559,7 @@ firewall-cmd --reload #Use this instead of systemctl because restarting the fire
 firewall-cmd --list-all #To check that your rules applied
 
 systemctl start zookeeper
-watch systemctl status zookeeper
+watch systemctl status zookeeper #Don't have to do this
 systemctl status zookeeper -l
 
 systemctl start kafka
@@ -566,7 +573,7 @@ cd /usr/share/kafka/bin #.sh script used to troubleshoot/configure kafka after d
 
 ./kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 1 --partitions 8 --topic fsf-raw
 
-# Check that the topics were created successfully
+# Check that the topics were created successfully- don't have to do this
 
 ./kafka-topics.sh --describe --zookeeper localhost:2181 --topic zeek-raw
 
@@ -588,10 +595,9 @@ sudo -s
 
 yum install zeek zeek-plugin-kafka zeek-plugin-af_packet -y
 
-lscpu -e
-
 cd /etc/zeek
 
+#Don't need to go to networks.cfg - this is just if you want to add stuff
 vi networks.cfg
   # Can insert tags in here that will tag certain IP's as certain thing (e.x. servers, googleDNS 8.8.8.8, Cloudflare DNS 1.1.1.1, etc.)
   #Needs CIDR (so for 8.8.8.8 it would be: 8.8.8.8/32)
@@ -624,8 +630,8 @@ vi node.cfg
 
 ```bash
 sudo -s
-cd /usr/share/zeek
-cd /site
+cd /usr/share/zeek/site
+
 mkdir scripts
 cd scripts/
 
@@ -661,6 +667,7 @@ vi local.zeek
 
   :wq!
 
+#Don't have to go to /usr/bin but it is here for troubleshooting
 #Zeek binary lives in /usr/bin
 cd /usr/bin
 
