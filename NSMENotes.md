@@ -745,6 +745,7 @@ ll # Should see a LOT of files
 
 chown logstash:logstash /etc/logstash/conf.d/*
 chmod -R 744 /etc/logstash/conf.d/ruby/
+rm -f /etc/logstash/logstash.tar
 
 
 ```
