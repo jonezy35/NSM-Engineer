@@ -260,10 +260,10 @@ sudo systemctl status network
   ```bash
 
   sudo -s
-  
+
   cd .ssh
   rm known_hosts
-  
+
   ssh username@sensorIP
 
   cd /etc/yum.repos.d/
@@ -283,7 +283,7 @@ sudo systemctl status network
   curl -L -O http://192.168.2.20/share/interface.sh
 
   mv interface.sh /tmp/
-  
+
   cd /tmp/
 
   chmod 777 interface.sh
@@ -495,9 +495,9 @@ vi /etc/zookeeper/zoo.cfg
   syncLimit=2
   clientPort=2181
   maxClientCnxns=0 #uncomment
-  
+
   #Add directly below maxClientCnxns
-  server.1=localhost:2182:2183 
+  server.1=localhost:2182:2183
   ESC
   :wq!
 
@@ -509,7 +509,7 @@ cat myid #Verify that 1 was written to myid
 
 vi /etc/kafka/server.properties
   :set nu
-  
+
   :21
   broker.id=1
   :31
@@ -711,3 +711,29 @@ systemctl status filebeat
 /usr/share/kafka/bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic fsf-raw --from-beginning
 
 /usr/share/kafka/bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic suricata-raw --from-beginning
+
+```
+
+### Logstach
+
+  - Input - Where data comes from
+  - Filter - Data Normalization & Data Enrichment
+  - Output - Send data to elasticsearch
+
+  #### Data Normalization & Enrichment
+    - Data Normalization:
+      - ECS (Elastic Common Schema)
+        - Transform/ Mutate (translate) incoming fields into a uniform field within elasticsearch
+        - "Data Schema"
+    - Data Enrichment
+      - e.x. - Correlating an IP address with a geolocation from a database and saving it to a new field
+
+```bash
+sudo -s
+
+cd /
+
+yum install logstash -y #Takes a second
+cd /etc/logstash
+
+```
