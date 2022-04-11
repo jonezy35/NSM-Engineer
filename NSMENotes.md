@@ -682,3 +682,32 @@ cd /usr/share/kafka/bin
 
 ./kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic zeek-raw --from-beginning
 ```
+
+# NSM Engineer Week 2
+
+## Shipping Data
+
+### Filebeat
+  - Ships data to Kafka Topics (From Suricata (eve.json) & FSF (rockout.log))
+  - Logstash then pulls from Kafka.
+    - This is better than pushing data to logstash so you don't accidentally overwhelm the VMHost
+
+```bash
+sudo -s
+
+yum install filebeat -y
+
+cd /etc/filebeat
+# filebeat.yml - Inputs and Outputs
+mv /etc/filebeat/filebeat.yml /etc/filebeat/filebeat.yml.bak # Makes this a backup file
+
+#Download the edited yaml file
+curl -L -O http://192.168.2.20/share/filebeat.yml
+
+systemctl start filebeat
+systemctl enable filebeat
+systemctl status filebeat
+
+/usr/share/kafka/bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic fsf-raw --from-beginning
+
+/usr/share/kafka/bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic suricata-raw --from-beginning
