@@ -714,7 +714,7 @@ systemctl status filebeat
 
 ```
 
-### Logstach
+### Logstash 
 
   - Input - Where data comes from
   - Filter - Data Normalization & Data Enrichment
