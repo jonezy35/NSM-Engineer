@@ -714,7 +714,7 @@ systemctl status filebeat
 
 ```
 
-### Logstash 
+### Logstash
 
   - Input - Where data comes from
   - Filter - Data Normalization & Data Enrichment
@@ -727,6 +727,7 @@ systemctl status filebeat
         - "Data Schema"
     - Data Enrichment
       - e.x. - Correlating an IP address with a geolocation from a database and saving it to a new field
+    - Best practice is to create multiple filter files so it is easier to edit/ troubleshoot
 
 ```bash
 sudo -s
@@ -734,6 +735,16 @@ sudo -s
 cd /
 
 yum install logstash -y #Takes a second
+
 cd /etc/logstash
+curl -L -O http://192.168.2.20/share/logstash.tar
+tar -xvf logstash.tar
+
+cd conf.d
+ll # Should see a LOT of files
+
+chown logstash:logstash /etc/logstash/conf.d/*
+chmod -R 744 /etc/logstash/conf.d/ruby/
+
 
 ```
