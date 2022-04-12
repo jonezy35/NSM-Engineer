@@ -852,7 +852,7 @@ yum install kibana -y
 vi /etc/kibana/kibana.yml
   :set nu
   :7
-  server.host: "172.16.10.101" #The IP of your sensor 
+  server.host: "172.16.10.101" #The IP of your sensor
   :28 #Uncomment this line
   ESC
   :wq!
@@ -863,4 +863,42 @@ firewall-cmd --reload
 
 systemctl start kibana
 systemctl status kibana
+```
+### Navigate to Kibana Sensor IP:5601
+
+  - Go to management -> Dev tools #This is to query elasticsearch's API in kibana
+    - GET _cat/nodes
+    - GET _cat/indices
+  - Go to management -> Stack Management
+    - Click on Index patterns
+      - ecs-*
+        - @timestamp
+        - Click "Create Index Pattern"
+      - ecs-zeek-*
+        - @timestamp
+        - Click "Create Index Pattern"
+      - ecs-suricata-*
+        - @timestamp
+        - Click "Create Index Pattern"
+      - fsf-*
+        - @timestamp
+        - Click "Create Index Pattern"
+
+  - Go to Discover
+
+
+### Elasticsearch Mappings
+
+```bash
+sudo -s
+
+cd ~
+curl -L -O http://192.168.2.20/share/ecskibana.tar
+tar -xvf ecskibana.tar
+
+cd ecskibana
+./import-index-templates.sh
+
+
+
 ```
