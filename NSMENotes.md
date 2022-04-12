@@ -771,10 +771,10 @@ systemctl start logstash
 - Node
   - Master Node
     - Manages the Cluster
-    - Should have no less than 3 Master Nodes
+    - Should have no more than 3 Master Nodes
     - Do it in odd numbers (kibana doesn't like even numbers for the election process)
     - The Master nodes that aren't currently master (so they are master eligible) are normally used as extra data nodes.
-    - Not very resource intensive 
+    - Not very resource intensive
   - Data
     - "Workhorses" - Index Data
   - Ingest
