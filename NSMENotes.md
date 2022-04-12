@@ -849,5 +849,5 @@ sudo -s
 
 yum install kibana -y
 
-Test
+
 ```
