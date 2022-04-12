@@ -849,5 +849,18 @@ sudo -s
 
 yum install kibana -y
 
+vi /etc/kibana/kibana.yml
+  :set nu
+  :7
+  server.host: "172.16.10.101" #The IP of your sensor 
+  :28 #Uncomment this line
+  ESC
+  :wq!
 
+firewall-cmd --add-port=5601/tcp --permanent
+firewall-cmd --reload
+
+
+systemctl start kibana
+systemctl status kibana
 ```
