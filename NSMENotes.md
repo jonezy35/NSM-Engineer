@@ -899,6 +899,4 @@ tar -xvf ecskibana.tar
 cd ecskibana
 ./import-index-templates.sh
 
-
-
 ```
