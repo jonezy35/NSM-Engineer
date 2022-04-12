@@ -793,5 +793,47 @@ systemctl start logstash
 ```bash
 sudo -s
 
+yum install elasticsearch  -y
+
+cd /data
+ll #Check for elasticsearch
+chown -R elasticsearch:elasticsearch elasticsearch/
+
+vi /etc/elasticsearch/elasticsearch.yml
+  :set nu
+  :17
+  cluster.name: sg-1 #Uncomment this line
+  :23
+  node.name: sg-1 #Uncomment this line
+  :33
+  path.data: /data/elasticsearch
+  :43 #Uncomment
+  :55
+  network.host: _local:ipv4_ #Uncomment this line
+  ESC
+  :wq!
+
+#This is where you set the heap size (should be half of the available memory or 30GB, whichever comes first)
+vi /etc/elasticsearch/jvm.options
+  :22
+  -Xms4g
+  :23
+  -Xmx4g
+
+mkdir /usr/lib/systemd/system/elasticsearch.service.d
+chmod 755 /usr/lib/systemd/system/elasticsearch.service.d/
+
+vi /usr/lib/systemd/system/elasticsearch.service.d/override.conf
+  [Service]
+  LimitMEMLOCK=infinity
+  ESC
+  :wq!
+
+systemctl daemon-reload
+
+firewall-cmd --add-port={9200,9300}/tcp --permanent
+firewall-cmd --reload
+systemctl start elasticsearch
+systemctl status elasticsearch
 
 ```
