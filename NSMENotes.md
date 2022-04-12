@@ -836,4 +836,8 @@ firewall-cmd --reload
 systemctl start elasticsearch
 systemctl status elasticsearch
 
+#Test that elasticsearch is running
+curl localhost:9200/_cat/nodes
+curl localhost:9200/_cat/indices
+
 ```
