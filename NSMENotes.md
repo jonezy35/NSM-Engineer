@@ -747,6 +747,49 @@ chown logstash:logstash /etc/logstash/conf.d/*
 chmod -R 744 /etc/logstash/conf.d/ruby/
 rm -f /etc/logstash/logstash.tar
 
-systemctl start logstash 
+systemctl start logstash
+
+```
+
+## Elasticsearch
+
+#### Node Types
+- Nodes refer to the instances (so it can be different physical boxes or multiple instances on one server)
+- Index (ECS-Zeek-Network-DATE)
+  - collection of data/documents (logs)
+    - Shard/ Replica
+      - Smaller than an Index
+      - Single worker (lucene query/index)
+      - Searchable data
+      - Replica's
+        - Stored backups of data
+        - If one node goes down you don't lose data
+        - Think of it like a RAID array across nodes
+        - Replication Factor: The term/setting to set how many copies of data are kept
+- Cluster - Multiple Nodes
+  - Each node can have properties attributed to them
+- Node
+  - Master Node
+    - Manages the Cluster
+    - Should have no less than 3 Master Nodes
+    - Do it in odd numbers (kibana doesn't like even numbers for the election process)
+  - Data
+    - "Workhorses" - Index Data
+  - Ingest
+    - Index Pipelines (Alternative to Logstash)
+  - Machine Learning
+    - If you don't have a dedicated ML node it gets thrown on a data node
+    - Very resource intensive
+  - Coordinating
+    - Node that is specifically not given any attributes
+    - Only job is to search
+    - Can increase performance of the searches
+  - Transform
+
+  ##### Nodes go through an election process to determine the Master Node
+
+```bash
+sudo -s
+
 
 ```
