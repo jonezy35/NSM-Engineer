@@ -841,3 +841,13 @@ curl localhost:9200/_cat/nodes
 curl localhost:9200/_cat/indices
 
 ```
+
+## Kibana
+
+```bash
+sudo -s
+
+yum install kibana -y
+
+
+```
