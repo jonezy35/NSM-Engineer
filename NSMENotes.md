@@ -6,6 +6,9 @@
   3. Interface Optimization
   4. Test Collection
 
+## Table of Contents
+  1) [Installing & Configuring CentOS](https://github.com/jonezy35/NSM-Engineer/blob/main/NSMENotes.md#installing--configuring-centos)
+
 # pfSense Installation
 
 ## Hardware Setup
