@@ -901,3 +901,4 @@ cd ecskibana
 ./import-index-templates.sh
 
 ```
+## Troubleshooting 
