@@ -721,6 +721,8 @@ systemctl status filebeat
   - Filter - Data Normalization & Data Enrichment
   - Output - Send data to elasticsearch
 
+  - Default port logstash has to have open to ingest beats: 5044
+
   #### Data Normalization & Enrichment
     - Data Normalization:
       - ECS (Elastic Common Schema)
@@ -901,4 +903,4 @@ cd ecskibana
 ./import-index-templates.sh
 
 ```
-## Troubleshooting 
+## Troubleshooting
