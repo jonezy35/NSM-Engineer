@@ -488,6 +488,7 @@ cd /data/fsf
 sudo yum install kafka librdkafka zookeeper -y
 ```
 #### Zookeeper must be started before Kafka!!!
+- Zookeeper performs the election process & forms a quorum
 ```bash
 sudo -s
 vi /etc/zookeeper/zoo.cfg
