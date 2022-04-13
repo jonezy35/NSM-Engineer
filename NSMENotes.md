@@ -8,6 +8,18 @@
 
 ## Table of Contents
   1) [Installing & Configuring CentOS](https://github.com/jonezy35/NSM-Engineer/blob/main/NSMENotes.md#installing--configuring-centos)
+  2) [Download REPO stuff](https://github.com/jonezy35/NSM-Engineer/blob/main/NSMENotes.md#download-repo-stuff)
+  3) [Install & Configure Stenographer](https://github.com/jonezy35/NSM-Engineer/blob/main/NSMENotes.md#installing--configuring-stenographer)
+  4) [Install & Configure Suricata](https://github.com/jonezy35/NSM-Engineer/blob/main/NSMENotes.md#installing--configuring-suricata)
+  5) [Install & Configure FSF](https://github.com/jonezy35/NSM-Engineer/blob/main/NSMENotes.md#installing--configuring-fsf)
+  6) [Kafka](https://github.com/jonezy35/NSM-Engineer/blob/main/NSMENotes.md#kafka)
+  7) [Installing & Configuring Zeek](https://github.com/jonezy35/NSM-Engineer/blob/main/NSMENotes.md#installing--configuring-zeek)
+  8) [Filebeat](https://github.com/jonezy35/NSM-Engineer/blob/main/NSMENotes.md#filebeat)
+  9) [Logstash](https://github.com/jonezy35/NSM-Engineer/blob/main/NSMENotes.md#logstash)
+  10) [Elasticsearch](https://github.com/jonezy35/NSM-Engineer/blob/main/NSMENotes.md#elasticsearch)
+  11) [Kibana](https://github.com/jonezy35/NSM-Engineer/blob/main/NSMENotes.md#kibana)
+  12) [Troubleshooting](https://github.com/jonezy35/NSM-Engineer/blob/main/NSMENotes.md#troubleshooting)
+  13) [Resource Allocation for 1Gb/s Capture](https://github.com/jonezy35/NSM-Engineer/blob/main/NSMENotes.md#resource-allocation-for-1gbs-capture)
 
 # pfSense Installation
 
