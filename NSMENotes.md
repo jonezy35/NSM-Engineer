@@ -752,6 +752,14 @@ rm -f /etc/logstash/logstash.tar
 
 systemctl start logstash
 
+#Base configuration file for logstash
+/etc/logstash/logstash.yml
+
+#File to edit the JVM OPTIONS
+/etc/logstash/jvm.options
+  - Minimum memory of 4GB, Max of 8GB
+
+
 ```
 
 ## Elasticsearch
