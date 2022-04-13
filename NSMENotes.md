@@ -760,6 +760,8 @@ systemctl start logstash
   - Minimum memory of 4GB, Max of 8GB
 
 
+
+
 ```
 
 ## Elasticsearch
@@ -786,6 +788,7 @@ systemctl start logstash
     - Do it in odd numbers (kibana doesn't like even numbers for the election process)
     - The Master nodes that aren't currently master (so they are master eligible) are normally used as extra data nodes.
     - Not very resource intensive
+    - Master node communicates over port 9300
   - Data
     - "Workhorses" - Index Data
   - Ingest
@@ -800,6 +803,9 @@ systemctl start logstash
   - Transform
 
   ##### Nodes go through an election process to determine the Master Node
+
+  - Port 9200 is listening port/ API communications
+  - Port 9300 is internal node communications
 
 ```bash
 sudo -s
@@ -912,3 +918,8 @@ cd ecskibana
 
 ```
 ## Troubleshooting
+
+- Make sure the group ID is configured correctly in logstash in the input pipeline files located in /etc/logstash/conf.d
+  - Date plugin is used in logstash filter to edit @timestamp to be the same as ts and then delete the ts field
+  - Mutate plugin is used to rename/create fields
+  - Output of a Logstash pipeline is the destination (in our case it's elasticsearch)
