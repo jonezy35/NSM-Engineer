@@ -12,7 +12,7 @@
   3) [Install & Configure Stenographer](https://github.com/jonezy35/NSM-Engineer/blob/main/NSMENotes.md#installing--configuring-stenographer)
   4) [Install & Configure Suricata](https://github.com/jonezy35/NSM-Engineer/blob/main/NSMENotes.md#installing--configuring-suricata)
   5) [Install & Configure FSF](https://github.com/jonezy35/NSM-Engineer/blob/main/NSMENotes.md#installing--configuring-fsf)
-  6) [Kafka](https://github.com/jonezy35/NSM-Engineer/blob/main/NSMENotes.md#kafka)
+  6) [Kafka & Zookeeper](https://github.com/jonezy35/NSM-Engineer/blob/main/NSMENotes.md#kafka)
   7) [Installing & Configuring Zeek](https://github.com/jonezy35/NSM-Engineer/blob/main/NSMENotes.md#installing--configuring-zeek)
   8) [Filebeat](https://github.com/jonezy35/NSM-Engineer/blob/main/NSMENotes.md#filebeat)
   9) [Logstash](https://github.com/jonezy35/NSM-Engineer/blob/main/NSMENotes.md#logstash)
@@ -111,6 +111,8 @@ rebind-domain-ok=/lab-repo/
 # Day 2
 
 ## Installing & Configuring CentOS
+
+[Return To Top](https://github.com/jonezy35/NSM-Engineer/blob/main/NSMENotes.md)
 
 
   1. Plug in CentOS USB
@@ -269,6 +271,8 @@ sudo systemctl status network
 ## Day 3
 
 ### Download repo stuff
+
+[Return To Top](https://github.com/jonezy35/NSM-Engineer/blob/main/NSMENotes.md)
   #### SSH into sensors
 
   ```bash
@@ -322,6 +326,8 @@ systemctl status network
   ```
 
 ## Installing & Configuring stenographer
+
+[Return To Top](https://github.com/jonezy35/NSM-Engineer/blob/main/NSMENotes.md)
 ```bash
 sudo -s
 yum install stenographer -y
@@ -363,6 +369,8 @@ ls (should see random string of numbers...this takes a bit)
 ```
 
 ## Installing & Configuring Suricata
+
+[Return To Top](https://github.com/jonezy35/NSM-Engineer/blob/main/NSMENotes.md)
 
 ```bash
 yum install suricata -y
@@ -421,6 +429,8 @@ systemctl status suricata
 ```
 
 ## Installing & Configuring fsf
+
+[Return To Top](https://github.com/jonezy35/NSM-Engineer/blob/main/NSMENotes.md)
 ```bash
 yum install fsf -y
 
@@ -473,6 +483,8 @@ cd /data/fsf
 # Day 4
 
 ## Kafka
+
+[Return To Top](https://github.com/jonezy35/NSM-Engineer/blob/main/NSMENotes.md)
  ### How Kafka works
  - Producer - endpoints
     - Data Origin
@@ -602,6 +614,8 @@ cd /usr/share/kafka/bin #.sh script used to troubleshoot/configure kafka after d
 ```
 ## Installing & Configuring zeek
 
+[Return To Top](https://github.com/jonezy35/NSM-Engineer/blob/main/NSMENotes.md)
+
 ### Zeek can NOT hyperthread. It can only be pinned on physical cores.
   - #### 160-200 Mbps per physical CPU core.
 
@@ -703,6 +717,8 @@ cd /usr/share/kafka/bin
 ## Shipping Data
 
 ### Filebeat
+
+[Return To Top](https://github.com/jonezy35/NSM-Engineer/blob/main/NSMENotes.md)
   - Ships data to Kafka Topics (From Suricata (eve.json) & FSF (rockout.log))
   - Logstash then pulls from Kafka.
     - This is better than pushing data to logstash so you don't accidentally overwhelm the VMHost
@@ -730,6 +746,8 @@ systemctl status filebeat
 ```
 
 ### Logstash
+
+[Return To Top](https://github.com/jonezy35/NSM-Engineer/blob/main/NSMENotes.md)
 
   - Input - Where data comes from
   - Filter - Data Normalization & Data Enrichment
@@ -779,6 +797,8 @@ systemctl start logstash
 ```
 
 ## Elasticsearch
+
+[Return To Top](https://github.com/jonezy35/NSM-Engineer/blob/main/NSMENotes.md)
 
 #### Node Types
 - Nodes refer to the instances (so it can be different physical boxes or multiple instances on one server)
@@ -876,6 +896,8 @@ curl localhost:9200/_cat/indices
 
 ## Kibana
 
+[Return To Top](https://github.com/jonezy35/NSM-Engineer/blob/main/NSMENotes.md)
+
 ```bash
 sudo -s
 
@@ -934,6 +956,7 @@ cd ecskibana
 ```
 ## Troubleshooting
 
+[Return To Top](https://github.com/jonezy35/NSM-Engineer/blob/main/NSMENotes.md)
 - Make sure the group ID is configured correctly in logstash in the input pipeline files located in /etc/logstash/conf.d
   - Date plugin is used in logstash filter to edit @timestamp to be the same as ts and then delete the ts field
   - Mutate plugin is used to rename/create fields
@@ -987,6 +1010,8 @@ firewall--cmd --reload
 ```
 
 ## Resource Allocation for 1Gb/s Capture
+
+[Return To Top](https://github.com/jonezy35/NSM-Engineer/blob/main/NSMENotes.md)
 
 ###### Unless otherwise specified core = thread
 
