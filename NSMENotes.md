@@ -112,7 +112,8 @@ rebind-domain-ok=/lab-repo/
 
 ## Installing & Configuring CentOS
 
-[Return To Top](https://github.com/jonezy35/NSM-Engineer/blob/main/NSMENotes.md)
+[Return To Top](https://github.com/jonezy35/NSM-Engineer/blob/main/NSMENotes.md#nsm-engineer-course)
+
 
 
   1. Plug in CentOS USB
@@ -272,7 +273,8 @@ sudo systemctl status network
 
 ### Download repo stuff
 
-[Return To Top](https://github.com/jonezy35/NSM-Engineer/blob/main/NSMENotes.md)
+[Return To Top](https://github.com/jonezy35/NSM-Engineer/blob/main/NSMENotes.md#nsm-engineer-course)
+
   #### SSH into sensors
 
   ```bash
@@ -327,7 +329,8 @@ systemctl status network
 
 ## Installing & Configuring stenographer
 
-[Return To Top](https://github.com/jonezy35/NSM-Engineer/blob/main/NSMENotes.md)
+[Return To Top](https://github.com/jonezy35/NSM-Engineer/blob/main/NSMENotes.md#nsm-engineer-course)
+
 ```bash
 sudo -s
 yum install stenographer -y
@@ -370,7 +373,8 @@ ls (should see random string of numbers...this takes a bit)
 
 ## Installing & Configuring Suricata
 
-[Return To Top](https://github.com/jonezy35/NSM-Engineer/blob/main/NSMENotes.md)
+[Return To Top](https://github.com/jonezy35/NSM-Engineer/blob/main/NSMENotes.md#nsm-engineer-course)
+
 
 ```bash
 yum install suricata -y
@@ -430,7 +434,8 @@ systemctl status suricata
 
 ## Installing & Configuring fsf
 
-[Return To Top](https://github.com/jonezy35/NSM-Engineer/blob/main/NSMENotes.md)
+[Return To Top](https://github.com/jonezy35/NSM-Engineer/blob/main/NSMENotes.md#nsm-engineer-course)
+
 ```bash
 yum install fsf -y
 
@@ -484,7 +489,8 @@ cd /data/fsf
 
 ## Kafka
 
-[Return To Top](https://github.com/jonezy35/NSM-Engineer/blob/main/NSMENotes.md)
+[Return To Top](https://github.com/jonezy35/NSM-Engineer/blob/main/NSMENotes.md#nsm-engineer-course)
+
  ### How Kafka works
  - Producer - endpoints
     - Data Origin
@@ -614,7 +620,7 @@ cd /usr/share/kafka/bin #.sh script used to troubleshoot/configure kafka after d
 ```
 ## Installing & Configuring zeek
 
-[Return To Top](https://github.com/jonezy35/NSM-Engineer/blob/main/NSMENotes.md)
+[Return To Top](https://github.com/jonezy35/NSM-Engineer/blob/main/NSMENotes.md#nsm-engineer-course)
 
 ### Zeek can NOT hyperthread. It can only be pinned on physical cores.
   - #### 160-200 Mbps per physical CPU core.
@@ -718,7 +724,7 @@ cd /usr/share/kafka/bin
 
 ### Filebeat
 
-[Return To Top](https://github.com/jonezy35/NSM-Engineer/blob/main/NSMENotes.md)
+[Return To Top](https://github.com/jonezy35/NSM-Engineer/blob/main/NSMENotes.md#nsm-engineer-course)
   - Ships data to Kafka Topics (From Suricata (eve.json) & FSF (rockout.log))
   - Logstash then pulls from Kafka.
     - This is better than pushing data to logstash so you don't accidentally overwhelm the VMHost
@@ -747,7 +753,7 @@ systemctl status filebeat
 
 ### Logstash
 
-[Return To Top](https://github.com/jonezy35/NSM-Engineer/blob/main/NSMENotes.md)
+[Return To Top](https://github.com/jonezy35/NSM-Engineer/blob/main/NSMENotes.md#nsm-engineer-course)
 
   - Input - Where data comes from
   - Filter - Data Normalization & Data Enrichment
@@ -798,7 +804,7 @@ systemctl start logstash
 
 ## Elasticsearch
 
-[Return To Top](https://github.com/jonezy35/NSM-Engineer/blob/main/NSMENotes.md)
+[Return To Top](https://github.com/jonezy35/NSM-Engineer/blob/main/NSMENotes.md#nsm-engineer-course)
 
 #### Node Types
 - Nodes refer to the instances (so it can be different physical boxes or multiple instances on one server)
@@ -896,7 +902,7 @@ curl localhost:9200/_cat/indices
 
 ## Kibana
 
-[Return To Top](https://github.com/jonezy35/NSM-Engineer/blob/main/NSMENotes.md)
+[Return To Top](https://github.com/jonezy35/NSM-Engineer/blob/main/NSMENotes.md#nsm-engineer-course)
 
 ```bash
 sudo -s
@@ -956,7 +962,7 @@ cd ecskibana
 ```
 ## Troubleshooting
 
-[Return To Top](https://github.com/jonezy35/NSM-Engineer/blob/main/NSMENotes.md)
+[Return To Top](https://github.com/jonezy35/NSM-Engineer/blob/main/NSMENotes.md#nsm-engineer-course)
 - Make sure the group ID is configured correctly in logstash in the input pipeline files located in /etc/logstash/conf.d
   - Date plugin is used in logstash filter to edit @timestamp to be the same as ts and then delete the ts field
   - Mutate plugin is used to rename/create fields
@@ -1011,7 +1017,7 @@ firewall--cmd --reload
 
 ## Resource Allocation for 1Gb/s Capture
 
-[Return To Top](https://github.com/jonezy35/NSM-Engineer/blob/main/NSMENotes.md)
+[Return To Top](https://github.com/jonezy35/NSM-Engineer/blob/main/NSMENotes.md#nsm-engineer-course)
 
 ###### Unless otherwise specified core = thread
 
