@@ -793,6 +793,7 @@ systemctl start logstash
     - "Workhorses" - Index Data
   - Ingest
     - Index Pipelines (Alternative to Logstash)
+    - Even if not used you still need one (Can just assign it to a data node)
   - Machine Learning
     - If you don't have a dedicated ML node it gets thrown on a data node
     - Very resource intensive
@@ -853,7 +854,7 @@ firewall-cmd --reload
 systemctl start elasticsearch
 systemctl status elasticsearch
 
-#Test that elasticsearch is running
+#API calls to test that elasticsearch is running
 curl localhost:9200/_cat/nodes
 curl localhost:9200/_cat/indices
 
@@ -923,3 +924,27 @@ cd ecskibana
   - Date plugin is used in logstash filter to edit @timestamp to be the same as ts and then delete the ts field
   - Mutate plugin is used to rename/create fields
   - Output of a Logstash pipeline is the destination (in our case it's elasticsearch)
+
+Kibana isn't returning any data
+  1. Check API's in Kibana
+  2. Check status of elasticsearch
+  3. df -h, du -h
+  4. Check kafka status
+  5. Run the long command to see if kafka is getting data
+  6. Check to see if zookeeper is running
+  7. Check filebeat
+  8. Check FSF
+
+  ### Start at the issue and work your way back
+
+  tcpdump -i capture_interface
+
+Logstash bootloop is caused by an incorrect configuration
+  - journalctl -xe
+
+zeekctl status (zeeks alternative to systemctl)
+
+df -h #Used to see partitions/mounts
+
+cd /data
+  du -h
