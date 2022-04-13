@@ -6,7 +6,6 @@
   3. Interface Optimization
   4. Test Collection
 
-
 # pfSense Installation
 
 ## Hardware Setup
@@ -937,14 +936,77 @@ Kibana isn't returning any data
 
   ### Start at the issue and work your way back
 
-  tcpdump -i capture_interface
+  tcpdump -i capture_interface #check that we are collecting traffic
+
+```bash
 
 Logstash bootloop is caused by an incorrect configuration
   - journalctl -xe
 
 zeekctl status (zeeks alternative to systemctl)
+cd /data/zeek/logs/current #Should see conn.log, http.log, files.log
 
 df -h #Used to see partitions/mounts
 
 cd /data
-  du -h
+  du -h #Check partition size
+
+cd /var/log #See log info about services
+  If logstash cant connect to elasticsearch then the outputs is configured incorrectly
+
+Dont forget about chown files and chmod files
+
+ss -lnt #Gives a list of sockets open
+
+Port 9600 #Logstash
+
+Port 1234 #Stenographer
+
+cd /data
+ll #To check ownership & permissions of files & directories
+zeek should be owned by root... the only one we dont change
+
+firewall--cmd --list-ports #To see open ports in the firewall
+firewall--cmd --reload
+
+```
+
+## Resource Allocation for 1Gb/s Capture
+
+###### Unless otherwise specified core = thread
+
+#### Sensor services. Total CPU: 22 cores Total RAM: 64GB RAM
+ - Steno
+  - 2 Cores
+  - 4-6GB RAM
+ - Zeek
+  - 160Mbps per **physical** core
+  - 5 **physical** cores per Gb/s of data
+  - 16GB of RAM
+ - Suricata
+  - 18 Cores
+  - 16 GB RAM
+  - Depends on how many rules to match against which makes it the hardest to figure out
+ - FSF
+  - 2 Cores
+  - 2 GB RAM
+ - Kafka
+  - 6 Cores
+  - 12 GB RAM
+ - OS
+  - 1 CPU Core
+  - 1 GB RAM
+  - ESXI
+    - 2 core
+    - 4 GB RAM
+  - Filebeat
+    - 1 Core
+    - 1 GB RAM
+
+#### VM Host Total CPU: Total RAM: 
+ - Logstash
+  -
+ - Elasticsearch
+  -
+ - Kibana
+  -
