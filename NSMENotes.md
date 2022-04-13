@@ -975,7 +975,7 @@ firewall--cmd --reload
 
 ###### Unless otherwise specified core = thread
 
-#### Sensor services. Total CPU: 22 cores Total RAM: 64GB RAM
+#### Sensor Services - Total CPU: 24 <ins>*physical*</ins> cores - Total RAM: 64GB RAM
  - Steno
   - 2 Cores
   - 4-6GB RAM
@@ -1002,11 +1002,19 @@ firewall--cmd --reload
   - Filebeat
     - 1 Core
     - 1 GB RAM
+  - Zookeeper
+    - 2 Cores
+    - 2 GB RAM
 
-#### VM Host Total CPU: Total RAM: 
+#### VM Host - Total CPU: 8 <ins>physical</ins> Cores - Total RAM: 58 GB RAM
  - Logstash
-  -
+  - 6 Cores
+  - 8 GB RAM
  - Elasticsearch
-  -
+  - 2-8 Cores
+  - 31-64 GB RAM
  - Kibana
-  -
+  - 2-4 Cores
+  - 4 GB RAM
+
+#### For Single Node Deployment - Total CPU: 34 <ins>physical</ins> cores - Total RAM: 128 GB RAM
