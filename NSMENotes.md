@@ -546,7 +546,7 @@ vi /etc/kafka/server.properties
   :21
   broker.id=1
   :31
-  listeners=PLAINTEXT:://localhost:9092 #Uncomment this line
+  listeners=PLAINTEXT://localhost:9092 #Uncomment this line
   :36
   advertized.listeners=PLAINTEXT://localhost:9092 #Uncomment
   :60
