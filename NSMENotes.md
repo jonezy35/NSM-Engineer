@@ -595,7 +595,7 @@ systemctl start zookeeper
 watch systemctl status zookeeper #Don't have to do this
 systemctl status zookeeper -l
 
-systemctl start kafka
+**systemctl start kafka**
 systemctl status kafka -l
 
 cd /usr/share/kafka/bin #.sh script used to troubleshoot/configure kafka after deployment
