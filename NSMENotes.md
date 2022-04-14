@@ -912,6 +912,7 @@ yum install kibana -y
 vi /etc/kibana/kibana.yml
   :set nu
   :7
+  # Uncomment this line 
   server.host: "172.16.10.101" #The IP of your sensor
   :28 #Uncomment this line
   ESC
