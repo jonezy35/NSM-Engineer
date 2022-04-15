@@ -1051,7 +1051,7 @@ firewall--cmd --reload
  - Logstash
   - 6 Cores
   - 8 GB RAM
- - Elasticsearch
+ - Elasticsearch (These are resources **per node**)
   - 2-8 Cores
   - 31-64 GB RAM
  - Kibana
