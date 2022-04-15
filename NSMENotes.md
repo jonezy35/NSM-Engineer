@@ -1,11 +1,5 @@
 # NSM Engineer Course
 
-### Order for Test
-  1. Installing
-  2. Networking
-  3. Interface Optimization
-  4. Test Collection
-
 ## Table of Contents
   1) [Installing & Configuring CentOS](https://github.com/jonezy35/NSM-Engineer/blob/main/NSMENotes.md#installing--configuring-centos)
   2) [Download REPO stuff](https://github.com/jonezy35/NSM-Engineer/blob/main/NSMENotes.md#download-repo-stuff)
