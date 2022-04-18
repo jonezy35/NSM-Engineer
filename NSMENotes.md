@@ -1049,8 +1049,8 @@ firewall--cmd --reload
 
 #### VM Host - Total CPU: 8 <ins>physical</ins> Cores - Total RAM: 58 GB RAM
   - Logstash
-   - 6 Cores
-   - 8 GB RAM
+    - 6 Cores
+     - 8 GB RAM
   - Elasticsearch (These are resources **per node**)
     - 2-8 Cores
     - 31-64 GB RAM
