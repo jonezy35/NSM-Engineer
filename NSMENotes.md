@@ -1037,13 +1037,13 @@ firewall--cmd --reload
  - OS
    - 1 CPU Core
     - 1 GB RAM
-    - ESXI
+ - ESXI
      - 2 core
      - 4 GB RAM
-   - Filebeat
+ - Filebeat
     - 1 Core
     - 1 GB RAM
-   - Zookeeper
+ - Zookeeper
     - 2 Cores
     - 2 GB RAM
 
@@ -1051,10 +1051,10 @@ firewall--cmd --reload
   - Logstash
    - 6 Cores
    - 8 GB RAM
-   - Elasticsearch (These are resources **per node**)
-     - 2-8 Cores
-     - 31-64 GB RAM
-   - Kibana
+  - Elasticsearch (These are resources **per node**)
+    - 2-8 Cores
+    - 31-64 GB RAM
+  - Kibana
      - 2-4 Cores
      - 4 GB RAM
 
